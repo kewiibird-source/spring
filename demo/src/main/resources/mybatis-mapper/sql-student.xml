@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.example.demo.mapper.StudentMapper"> <!--연결할mapper파일-->
+	<select id="selectStudentList" resultType="com.example.demo.model.Student">
+		SELECT *
+		FROM STUDENT
+	</select>
+	<delete id="deleteStudent" parameterType="hashmap">
+		DELETE FROM STUDENT WHERE STU_NO = #{stuNo}
+	</delete>
+</mapper>

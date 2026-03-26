@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +43,7 @@
                 let self = this;
                 let param = {};
                 $.ajax({
-                    url: "",
+                    url: "http://localhost:8080/",
                     dataType: "json",
                     type: "POST",
                     data: param,

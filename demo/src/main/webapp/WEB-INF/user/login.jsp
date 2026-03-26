@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="kr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>login</title>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <style>
@@ -26,8 +26,14 @@
 <body>
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
-         <h1>ㅇㅏㄴㄴㅕㅇ~~</h1>
-         <button @click="fntest">테스트</button>
+         <div>
+            <label>아이디 : <input v-model="userId"></label>
+         </div>
+         <div>
+            <label>비밀번호 : <input v-model="pwd" type="password"></label>
+         </div>
+         <button @click="fnLogin">로그인</button>
+         <button @click="">회원가입</button>
     </div>
 </body>
 </html>
@@ -37,24 +43,26 @@
         data() {
             return {
                 // 변수 - (key : value)
+                userId : "",
+                pwd : ""
             };
         },
         methods: {
             // 함수(메소드) - (key : function())
-            fntest: function () {
+            fnLogin : function () {
                 let self = this;
                 let param = {
-                    stuNo : "12345678",
-                    test : "1234",
-                    name : "홍길동"
+                    userId : self.userId,
+                    pwd : self.pwd
                 };
                 $.ajax({
-                    url: "http://localhost:8080/test.dox",
+                    url: "http://localhost:8080/login.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
-                        console.log(data);
+                        alert(data.message);
+
                     }
                 });
             }

@@ -29,23 +29,20 @@ public class DefaultController {
 		return "/test";
 	}
 	
-	@RequestMapping(value = "/test.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/default.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String login(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
-//		Defaultservice obj = new Defaultservice();
-//		자바 관점에서 객체를 만들어야 메소드를 호출할수있죠
-//		상단에 @Autowired로 선언하면?
-		defaultservice.getUserList();
+		return new Gson().toJson(resultMap); 
+	}
+	
+	@RequestMapping(value = "/test.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String userList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
-		
-		
-		System.out.println("test.dox 호출 됨 !!");
-		System.out.println(map);
-		
-		resultMap.put("result", "success");
-		resultMap.put("hello", "word");
+		resultMap = defaultservice.getUserList();
 		return new Gson().toJson(resultMap); 
 	}
 	
