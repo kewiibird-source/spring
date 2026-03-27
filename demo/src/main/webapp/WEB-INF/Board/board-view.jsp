@@ -27,6 +27,18 @@
 <body>
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
+         <div>
+            제목 : {{info.title}}
+         </div>
+         <div>
+            조회수 : {{info.cnt}}
+         </div>
+         <div>
+            내용 : {{info.contents}}
+         </div>
+         <div>
+            <button @click="fnEdit">수정</button>
+         </div>
     </div>
 </body>
 </html>
@@ -36,27 +48,37 @@
         data() {
             return {
                 // 변수 - (key : value)
+                boardNo : "${boardNo}",
+                info : {}
             };
         },
         methods: {
             // 함수(메소드) - (key : function())
-            fnList: function () {
+            fnGetBoard: function () {
                 let self = this;
-                let param = {};
+                let param = {
+                    boardNo : self.boardNo,
+                    kind : "view"
+                };
                 $.ajax({
-                    url: "http://localhost:8080/",
+                    url: "http://localhost:8080/Board/info.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
-
+                        self.info = data.info;
                     }
                 });
+            },
+            fnEdit: function () {
+                let self = this;
+                pageChange("/Board/edit.do", {boardNo : self.boardNo});
             }
         }, // methods
         mounted() {
             // 처음 시작할 때 실행되는 부분
             let self = this;
+            self.fnGetBoard();
         }
     });
 

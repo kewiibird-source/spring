@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.example.demo.mapper.BoardMapper"> <!--연결할mapper파일-->
+	<select id="selectBoardList" resultType="com.example.demo.model.Board">
+		SELECT *
+		FROM TBL_BOARD
+		WHERE TITLE LIKE CONCAT('%', #{keyword}, '%')
+		ORDER BY CDATETIME DESC, BOARDNO DESC
+		
+	</select>
+	
+	<insert id="insertBoard" parameterType="hashmap">
+		INSERT INTO TBL_BOARD
+		VALUES(null, 'user01', #{title}, #{contents}, 0, #{kind}, NOW(), NOW())
+	</insert>
+	
+	<select id="selectBoard" resultType="com.example.demo.model.Board">
+		SELECT *
+		FROM TBL_BOARD
+		WHERE BOARDNO = #{boardNo}
+	</select>
+	
+	<update id="updateCnt" parameterType="hashmap">
+		UPDATE TBL_BOARD 
+		SET 
+			CNT = CNT + 1
+		WHERE BOARDNO = #{boardNo}
+	</update>
+	
+	<update id="updateBoard" parameterType="hashmap">
+		UPDATE TBL_BOARD 
+		SET 
+			TITLE = #{title},
+			CONTENTS = #{contents},
+			KIND = #{kind}
+		WHERE BOARDNO = #{boardNo}
+	</update>
+</mapper>
