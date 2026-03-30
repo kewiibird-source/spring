@@ -15,17 +15,16 @@
             padding : 5px 10px;
             text-align: center;
         }
-        th{
-            background-color: beige;
+        input {
+            outline: none;   
         }
-        tr:nth-child(even){
-            background-color: azure;
-        }
+        
     </style>
 </head>
 <body>
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
+
          <div>
             <label>아이디 : <input v-model="userId"></label>
             <button @click="fnCheck">중복체크</button>
@@ -37,20 +36,34 @@
             <label>이름 : <input v-model="userName" ></label>
          </div>
          <div>
+            <label>주소 : 
+                <input v-model="addr">
+                <button @click="fnAddr()">주소검색</button>
+            </label>
+        </div>
+        <div>
             <button @click="fnJoin">가입</button>
-         </div>
-    </div>
+        </div>
+        </div>
+        
 </body>
 </html>
 
 <script>
+
+    function jusoCallBack(roadFullAddr,roadAddrPart1,addrDetail,roadAddrPart2,engAddr, jibunAddr, zipNo, admCd, rnMgtSn, bdMgtSn,detBdNmList,bdNm,bdKdcd,siNm,sggNm,emdNm,liNm,rn,udrtYn,buldMnnm,buldSlno,mtYn,lnbrMnnm,lnbrSlno,emdNo){
+        console.log(window.vueObj);
+        window.vueObj.addr = roadFullAddr;
+    }
+
     const app = Vue.createApp({
         data() {
             return {
                 // 변수 - (key : value)
                 userId : "",
                 pwd : "",
-                userName : ""
+                userName : "",
+                addr : ""
             };
         },
         methods: {
@@ -86,11 +99,15 @@
                         alert(data.message);
                     }
                 });
+            },
+            fnAddr : function() {
+                window.open("/addr.do", "addr", "width=500, height=500");
             }
         }, // methods
         mounted() {
             // 처음 시작할 때 실행되는 부분
             let self = this;
+            window.vueObj = this;
         }
     });
 

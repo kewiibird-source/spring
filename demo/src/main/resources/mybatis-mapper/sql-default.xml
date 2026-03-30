@@ -1,9 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
 <mapper namespace = "com.example.demo.mapper.DefaulfMapper"> <!--연결할mapper파일-->
-	<select id="selectUserList" resultType="com.example.demo.model.User">
-		SELECT *
-		FROM TBL_USER
+	<!--여러개 검색-->
+	<select id="selectUserList" parameterType="hashmap" resultType="com.example.demo.model.User">
 	</select>
+	
+	<!--한개 검색-->
+	<select id="selectUser" parameterType="hashmap" resultType="com.example.demo.model.User">
+	</select>
+	
+	<!--삽입-->
+	<insert id="insertUser" parameterType="hashmap">
+	</insert>
+	
+	<!--삭제-->
+	<insert id="deleteUser" parameterType="hashmap">
+	</insert>
+	
+	<!--삭제-->
+	<insert id="updateUser" parameterType="hashmap">
+	</insert>
+	
 </mapper>
