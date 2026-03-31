@@ -16,8 +16,8 @@
 	</insert>
 	
 	<!--삭제-->
-	<insert id="deleteUser" parameterType="hashmap">
-	</insert>
+	<delete id="deleteUser" parameterType="hashmap">
+	</delete>
 	
 	<!--삭제-->
 	<insert id="updateUser" parameterType="hashmap">

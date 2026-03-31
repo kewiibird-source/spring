@@ -3,7 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace = "com.example.demo.mapper.SchoolMapper"> <!--연결할mapper파일-->
-	<!--여러개 검색-->
+	<!--교수리스트-->
 	<select id="selectProfList" parameterType="hashmap" resultType="com.example.demo.model.Professor">
 		SELECT 
 			P.*, 
@@ -12,6 +12,13 @@
 		FROM PROFESSOR P
 		INNER JOIN DEPARTMENT D1 ON P.DEPTNO = D1.DEPTNO
 		INNER JOIN DEPARTMENT D2 ON D1.PART = D2.DEPTNO
+		WHERE 1=1
+		<if test="position != '' and position != null">
+			AND POSITION = #{position};		
+		</if>
+		<if test="deptNo != '' and deptNo != null">
+			AND P.DEPTNO = #{deptNo};		
+		</if>
 	</select>
 	
 	<select id="selectStuList" parameterType="hashmap" resultType="com.example.demo.model.Student">
@@ -30,8 +37,45 @@
 		<if test="grade != '' and grade != null">
 			AND S.GRADE = #{grade};		
 		</if>
+		<if test="deptNo != '' and deptNo != null">
+			AND S.DEPTNO1 = #{deptNo};		
+		</if>
 	</select>
 	
+	<select id="selectDeptList" parameterType="hashmap" resultType="com.example.demo.model.Dept">
+		SELECT *
+		FROM DEPARTMENT
+		WHERE BUILD IS NOT NULL
+	</select>
 	
+	<!--학생추가-->
+	<insert id="insertStu" parameterType="hashmap">
+		INSERT INTO STU(STUNO, NAME, GRADE, DEPTNO1, PROFNO)
+		VALUES(#{stuNo},#{stuName},#{grade},#{deptNo},#{profNo})
+	</insert>
+	
+	<!--교수추가-->
+	<insert id="insertProf" parameterType="hashmap">
+		INSERT INTO PROFESSOR(PROFNO, NAME, POSITION, PAY, DEPTNO)
+		VALUES(#{profNo},#{profName},#{position},#{pay},#{deptNo})
+	</insert>
+	
+	<!--아이디중복-->
+	<select id="selectStu" parameterType="hashmap" resultType="com.example.demo.model.Student">
+		SELECT *
+		FROM STU
+		WHERE STUNO = #{stuNo}
+	</select>
+	
+	<!--학생목록삭제-->
+	<delete id="deleteStu" parameterType="hashmap">
+		DELETE FROM STU
+		WHERE STUNO = #{stuNo}
+	</delete>
+	<!--교수삭제-->
+	<delete id="deleteProf" parameterType="hashmap">
+		DELETE FROM PROFESSOR
+		WHERE PROFNO = #{profNo}
+	</delete>
 	
 </mapper>

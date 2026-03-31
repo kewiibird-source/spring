@@ -44,4 +44,63 @@ public class SchoolController {
 		resultMap = schoolService.getStuList(map);
 		return new Gson().toJson(resultMap); 
 	}
+	
+	// 학과 목록 
+	@RequestMapping(value = "/dept/list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String dept(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = schoolService.getDeptList(map);
+		return new Gson().toJson(resultMap); 
+	}
+	
+	// 학생추가 버튼
+	@RequestMapping("/stu/add.do")
+	public String add(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{
+		return "/School/stu-add";
+	}
+	@RequestMapping(value = "/stu/add.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String add(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = schoolService.addStu(map);
+		return new Gson().toJson(resultMap); 
+	}
+	// 교수추가 버튼
+	@RequestMapping("/prof/add.do")
+	public String profAdd(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{
+		return "/School/prof-add";
+	}
+	@RequestMapping(value = "/prof/add.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String profAdd(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = schoolService.addProf(map);
+		return new Gson().toJson(resultMap); 
+	}
+	// 학생조회
+	@RequestMapping(value = "/stu/check.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String check(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = schoolService.getStu(map);
+		return new Gson().toJson(resultMap); 
+	}
+	// 학생삭제
+	@RequestMapping(value = "/stu/remove.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String remov(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = schoolService.removeStu(map);
+		return new Gson().toJson(resultMap); 
+	}
+	// 교수삭제
+	@RequestMapping(value = "/prof/remove.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String removProf(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = schoolService.removeProf(map);
+		return new Gson().toJson(resultMap); 
+	}
+	
 }
