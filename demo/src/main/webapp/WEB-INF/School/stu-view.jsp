@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>board view</title>
+    <title>stu-view 상세보기</title>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
         <script src="/js/page-change.js"></script>
@@ -28,21 +28,18 @@
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
          <div>
-            제목 : {{info.title}}
+            이름 : {{info.name}}
          </div>
          <div>
-            조회수 : {{info.cnt}}
-         </div>
-         <div v-for="item in fileList">
-            <img :src="item.filePath">
-         </div>
-         <!-- <div>내용(태그적용안되는거) : {{info.contents}}</div> -->
-         <div>
-            내용(태그적용된 내용) : <div v-html="info.contents"></div>
+            학번 : {{info.stuNo}}
          </div>
          <div>
-            <button @click="fnEdit">수정</button>
+            학과 : {{info.dName3}}
          </div>
+         <div>
+            담당교수 : {{info.profName}}
+         </div>
+         <button @click="fnEdit">수정</button>
     </div>
 </body>
 </html>
@@ -52,40 +49,36 @@
         data() {
             return {
                 // 변수 - (key : value)
-                boardNo : "${boardNo}",
-                info : {},
-                fileList : []
+                stuNo : "${map.stuNo}",
+                info : {}
             };
         },
         methods: {
             // 함수(메소드) - (key : function())
-            fnGetBoard: function () {
+            fnGetInfo: function () {
                 let self = this;
                 let param = {
-                    boardNo : self.boardNo,
-                    kind : "view"
+                    stuNo : self.stuNo
                 };
                 $.ajax({
-                    url: "http://localhost:8080/Board/info.dox",
+                    url: "http://localhost:8080/stu/info.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
                         console.log(data);
                         self.info = data.info;
-                        self.fileList = data.fileList;
                     }
                 });
-            }, 
-            fnEdit: function () {
-                let self = this;
-                pageChange("/Board/edit.do", {boardNo : self.boardNo});
+            },
+            fnEdit : function() {
+                pageChange("/stu/edit.do", {stuNo : this.stuNo});
             }
         }, // methods
         mounted() {
             // 처음 시작할 때 실행되는 부분
             let self = this;
-            self.fnGetBoard();
+            self.fnGetInfo();
         }
     });
 

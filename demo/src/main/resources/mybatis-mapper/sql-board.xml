@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace = "com.example.demo.mapper.BoardMapper"> <!--연결할mapper파일-->
+
 	<select id="selectBoardList" resultType="com.example.demo.model.Board">
 		SELECT *
 		FROM TBL_BOARD
@@ -10,14 +11,30 @@
 		
 	</select>
 	
-	<insert id="insertBoard" parameterType="hashmap">
+	<!--게시물, 첨부파일 삽입-->
+	<insert id="insertBoard" parameterType="hashmap"
+			useGeneratedKeys="true" 
+			keyColumn="BOARDNO" 
+			keyProperty="boardNo">
 		INSERT INTO TBL_BOARD
 		VALUES(null, 'user01', #{title}, #{contents}, 0, #{kind}, NOW(), NOW())
 	</insert>
 	
+	<insert id="insertBoardFile" parameterType="hashmap">
+		INSERT INTO TBL_BOARD_FILE
+		VALUES(null, #{idx}, #{path}, #{fileName}, #{orgName}, #{size}, #{ext})
+	</insert>
+	
+	<!--게시물, 첨부파일 조회-->
 	<select id="selectBoard" resultType="com.example.demo.model.Board">
 		SELECT *
 		FROM TBL_BOARD
+		WHERE BOARDNO = #{boardNo}
+	</select>
+
+	<select id="selectBoardFile" resultType="com.example.demo.model.Board">
+		SELECT *
+		FROM TBL_BOARD_FILE
 		WHERE BOARDNO = #{boardNo}
 	</select>
 	

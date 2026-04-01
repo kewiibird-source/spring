@@ -138,7 +138,7 @@ public class SchoolService {
 		return resultMap;
 	}
 	
-	// 학생 삭제
+	// 교수 삭제
 	public HashMap<String, Object> removeProf(HashMap<String, Object> map){
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		try {
@@ -146,6 +146,55 @@ public class SchoolService {
 			
 			resultMap.put("result", "success");
 			resultMap.put("message", Message.MSG_REMOVE); // 에러 메세지 만들어놓은거!
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			resultMap.put("result", "fail");
+			resultMap.put("message", Message.MSG_SERVER_ERR); 
+		}
+		return resultMap;
+	}
+	
+	//학생 상세보기
+	public HashMap<String, Object> getStuInfo(HashMap<String, Object> map){
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			Student info = schoolMapper.selectStu(map);
+			
+			resultMap.put("info", info);
+			resultMap.put("result", "success");
+			resultMap.put("message", Message.MSG_SEARCH); // 에러 메세지 만들어놓은거!
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			resultMap.put("result", "fail");
+			resultMap.put("message", Message.MSG_SERVER_ERR); 
+		}
+		return resultMap;
+	}
+	//교수 상세보기
+	public HashMap<String, Object> getProfInfo(HashMap<String, Object> map){
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			Professor info = schoolMapper.selectProf(map);
+			
+			resultMap.put("info", info);
+			resultMap.put("result", "success");
+			resultMap.put("message", Message.MSG_SEARCH); // 에러 메세지 만들어놓은거!
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			resultMap.put("result", "fail");
+			resultMap.put("message", Message.MSG_SERVER_ERR); 
+		}
+		return resultMap;
+	}
+	
+	// 학생 수정
+	public HashMap<String, Object> editStu(HashMap<String, Object> map){
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			int result = schoolMapper.updateStu(map);
+			
+			resultMap.put("result", "success");
+			resultMap.put("message", Message.MSG_EDIT); // 에러 메세지 만들어놓은거!
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			resultMap.put("result", "fail");

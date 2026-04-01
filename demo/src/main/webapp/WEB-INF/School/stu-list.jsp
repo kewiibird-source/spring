@@ -59,7 +59,9 @@
                     </tr>
                     <tr v-for="item in list">
                         <td>{{item.stuNo}}</td>
-                        <td>{{item.name}}</td>
+                        <td>
+                            <a href="javascript:;" @click="fnView(item.stuNo)">{{item.name}}</a>
+                        </td>
                         <td>{{item.dName2}}</td>
                         <td>{{item.dName3}}</td>
                         <td>{{item.grade}}</td>
@@ -136,6 +138,9 @@
                         self.fnGetList();
                     }
                 });
+            },
+            fnView : function(stuNo){
+                pageChange("/stu/view.do", {stuNo : stuNo});
             }
         }, // methods
         mounted() {

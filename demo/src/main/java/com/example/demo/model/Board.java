@@ -12,4 +12,12 @@ public class Board {
 	int kind;
 	String cDateTime;
 	String uDateTime;
+	
+//	첨부파일
+	int fileNo;
+	String filePath;
+	String fileName;
+	String fileOrgName;
+	String fileSize;
+	String fileETC;
 }

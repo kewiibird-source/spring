@@ -19,8 +19,8 @@
 	<delete id="deleteUser" parameterType="hashmap">
 	</delete>
 	
-	<!--삭제-->
-	<insert id="updateUser" parameterType="hashmap">
-	</insert>
+	<!--수정-->
+	<update id="updateUser" parameterType="hashmap">
+	</update>
 	
 </mapper>

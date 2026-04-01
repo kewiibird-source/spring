@@ -8,12 +8,25 @@
 		FROM TBL_USER
 	</select>
 	
+	<!--아이디중복체크-->
 	<select id="selectUser" parameterType="hashmap" resultType="com.example.demo.model.User">
 		SELECT * 
 		FROM TBL_USER
 		WHERE USERID = #{userId}
 	</select>
 	
+	<!--첨부파일-->
+	<!--<insert id="insertBoardFile" parameterType="hashmap">
+		INSERT INTO TBL_BOARD_FILE
+		VALUES(null, #{idx}, #{path}, #{fileName}, #{orgName}, #{size}, #{ext})
+	</insert>
+	<select id="selectUser" parameterType="hashmap" resultType="com.example.demo.model.User">
+		SELECT * 
+		FROM TBL_USER
+		WHERE USERID = #{userId}
+	</select>-->
+	
+	<!--회원가입-->
 	<insert id="insertUser" parameterType="hashmap">
 		INSERT INTO TBL_USER(USERID, PWD, USERNAME) 
 		VALUES(#{userId}, #{pwd}, #{userName}) 

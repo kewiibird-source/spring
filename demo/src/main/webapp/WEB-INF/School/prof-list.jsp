@@ -58,7 +58,9 @@
                     <tr v-for="item in list">
                         <td><input type="radio" name="prof" v-model="selectItem" :value="item.profNo"></td>
                         <td>{{item.profNo}}</td>
-                        <td>{{item.name}}</td>
+                        <td>
+                           <a href="javascript:;" @click="fnView(item.profNo)">{{item.name}}</a>
+                        </td>
                         <td>{{item.position}}</td>
                         <td>{{item.pay}}</td>
                         <td>{{item.dName2}}</td>
@@ -69,6 +71,7 @@
             <div class="btn-area">
                 <a href="/prof/add.do"><button>교수추가</button></a>
                 <button @click="fnRemove">삭제</button>
+                <button @click="fnView(selectItem)">상세보기</button>
             </div>
         </div>
     </div>
@@ -126,6 +129,14 @@
                         self.fnGetList(); // 삭제후 다시 리스트 조회해서 화면에 뿌려줌
                     }
                 });
+            },
+            fnView : function(profNo){
+                // let _profNo = profNo != '' ? profNo : self.selectItem;
+                if(profNo == ''){
+                    alert("교수 선택해주셈");
+                    return;
+                }
+                pageChange("/prof/view.do", {profNo : profNo});
             }
         }, // methods
         mounted() {
