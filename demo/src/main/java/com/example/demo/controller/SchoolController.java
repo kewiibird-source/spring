@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.dao.SchoolService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +35,7 @@ public class SchoolController {
 		resultMap = schoolService.getProfList(map);
 		return new Gson().toJson(resultMap); 
 	}
-	
+	// 학생목fhr
 	@RequestMapping("/stu/list.do")
 	public String stu(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{
 		return "/School/stu-list";
@@ -92,6 +95,20 @@ public class SchoolController {
 	public String remov(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap = schoolService.removeStu(map);
+		return new Gson().toJson(resultMap); 
+	}
+	@RequestMapping(value = "/stu/remove-all.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	// 학생 체크박스로 여려명 삭제
+	@ResponseBody
+	public String removAll(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		String json = map.get("selectList").toString(); 
+		ObjectMapper mapper = new ObjectMapper();
+		List<Object> list = mapper.readValue(json, new TypeReference<List<Object>>(){});
+		map.put("list", list);
+		
+		System.out.println(map);
+		resultMap = schoolService.removeAllStu(map);
 		return new Gson().toJson(resultMap); 
 	}
 	// 교수삭제

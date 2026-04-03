@@ -81,6 +81,11 @@
 		    <artifactId>sdk</artifactId>
 		    <version>1.0.3</version>
 		</dependency>
+		<!--security 비밀번호해시-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 		
 	</dependencies>
 

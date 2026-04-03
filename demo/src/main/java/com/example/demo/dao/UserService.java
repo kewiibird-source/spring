@@ -4,11 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.common.Message;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.User;
+
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UserService {
@@ -16,14 +19,34 @@ public class UserService {
 	@Autowired
 	UserMapper userMapper;
 	
+	@Autowired
+	HttpSession session;
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	
 //	로그인
 	public HashMap<String, Object> login(HashMap<String, Object> map){
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		User user = userMapper.selectUser(map);
-
+		User user = userMapper.selectUser(map); // id있는지 확인
+		resultMap.put("loginResult", false);
 		if(user != null) {
-			if(user.getPwd().equals(map.get("pwd"))) {
-				resultMap.put("message", user.getUserName() + "님 환영합니다!");				
+			if(passwordEncoder.matches((String) map.get("pwd"), user.getPwd())) {
+				resultMap.put("message", user.getUserName() + "님 환영합니다!");	
+				resultMap.put("loginResult", true);
+				// 로그인 성공시 세션에 정보저장
+				session.setAttribute("sessionId", user.getUserId());
+				session.setAttribute("sessionName", user.getUserName());
+				session.setAttribute("sessionRole", user.getRole());
+				
+//				if(user.getRole().equals("A")) {
+//					resultMap.put("url", "/prof/list.do");					
+//				} else {					
+//					resultMap.put("url", "/stu/list.do");
+//				}
+				resultMap.put("url", "/Board/list.do");
+				
+//				session.invalidate(); // 세션의 모든정보 삭제(로그아웃 버튼 눌렀을때)
 			} else {
 				resultMap.put("message", "비밀번호를 확인해주세요.");							
 			}
@@ -41,6 +64,10 @@ public class UserService {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
 		try {
+			
+			String hashPwd = passwordEncoder.encode((String) map.get("pwd")); //encode 해시함수!!
+			map.put("hashPwd", hashPwd);
+			
 			int cnt = userMapper.insertUser(map);
 			if(cnt > 0) {
 				resultMap.put("message", "회원가입 추카");

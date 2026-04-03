@@ -9,11 +9,16 @@ import org.springframework.stereotype.Service;
 import com.example.demo.mapper.BoardMapper;
 import com.example.demo.model.Board;
 
+import jakarta.servlet.http.HttpSession;
+
 @Service
 public class BoardService {
 	// mapper에서 데이터베이스 조회결과를 리턴받는다
 	@Autowired
 	BoardMapper boardMapper; // boardMapper의 객체
+	
+	@Autowired
+	HttpSession session;
 	
 	public HashMap<String, Object> getBoardList(HashMap<String, Object> map){ // <= 마찬가지로 괄호안은 나중에 받을값
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
@@ -35,6 +40,7 @@ public class BoardService {
 	public HashMap<String, Object> addBoard(HashMap<String, Object> map){ // <= 마찬가지로 괄호안은 나중에 받을값
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		try {
+			map.put("sessionId", session.getAttribute("sessionId")); //세션에있는아이디담아서보내기
 			boardMapper.insertBoard(map); // boardMapper 객체 안에서 꺼내오기
 			System.out.println("insert된 key값 : " + map.get("boardNo")); // ai로 생성된 보드no
 			resultMap.put("boardNo", map.get("boardNo"));

@@ -16,6 +16,7 @@ public interface SchoolMapper {
 	public List<Professor> selectProfList(HashMap<String, Object> map);
 	// 학생 목록
 	public List<Student> selectStuList(HashMap<String, Object> map);
+	
 	// 학과 목록
 	public List<Dept> selectDeptList(HashMap<String, Object> map);
 	// 학생 추가
@@ -26,6 +27,8 @@ public interface SchoolMapper {
 	public Student selectStu(HashMap<String, Object> map);
 	// 학생 삭제 
 	public int deleteStu(HashMap<String, Object> map);
+	// 학생 여려명 삭제
+	public int deleteAllStu(HashMap<String, Object> map);
 	// 교수 삭제 
 	public int deleteProf(HashMap<String, Object> map);
 	// 교수 한명에 대한 정보

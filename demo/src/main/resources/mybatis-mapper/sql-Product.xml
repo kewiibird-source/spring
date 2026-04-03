@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace = "com.example.demo.mapper.ProductMapper"> <!--연결할mapper파일-->
+
+	<!--제품별매출액-->
+	<select id="selectOrderList" parameterType="hashmap" resultType="com.example.demo.model.Product">
+		SELECT 
+			P.PRODUCT_ID, 
+			PRODUCT_NAME, 
+			ROUND(SUM(ORDER_PRICE*ORDER_QTY)) AS SUM_PRICE
+		FROM PRODUCT P
+		INNER JOIN PRODUCT_ORDERS O ON P.PRODUCT_ID = O.PRODUCT_ID
+		GROUP BY P.PRODUCT_ID, PRODUCT_NAME
+		
+	</select>
+	
+	
+	
+</mapper>

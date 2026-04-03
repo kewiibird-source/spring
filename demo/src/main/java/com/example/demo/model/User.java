@@ -8,6 +8,7 @@ public class User {
 	String userName;
 	String pwd;
 	String gender;
+	String role;
 	// 대소문자 구분X , db 컬럼 이름은 같아야함
 	// 정의한 개수대로 db로 돌려받음
 	

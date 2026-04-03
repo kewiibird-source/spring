@@ -20,7 +20,7 @@
 			AND P.DEPTNO = #{deptNo};		
 		</if>
 	</select>
-	
+	<!--학생목록-->
 	<select id="selectStuList" parameterType="hashmap" resultType="com.example.demo.model.Student">
 		SELECT 
 			S.*, 
@@ -40,6 +40,21 @@
 		<if test="deptNo != '' and deptNo != null">
 			AND S.DEPTNO1 = #{deptNo};		
 		</if>
+		<choose>
+			<when test="orderItem == 'name'">
+				ORDER BY NAME
+			</when>
+			<when test="orderItem == 'dept'">
+				ORDER BY D1.DNAME
+			</when>
+			<when test="orderItem == 'grad'">
+				ORDER BY GRADE
+			</when>
+			<otherwise>
+				ORDER BY GRADE 
+				<!--when에서 선택된게 없을때-->
+			</otherwise>
+		</choose>
 	</select>
 	
 	<select id="selectDeptList" parameterType="hashmap" resultType="com.example.demo.model.Dept">
@@ -76,11 +91,20 @@
 		WHERE STUNO = #{stuNo}
 	</select>
 	
-	<!--학생목록삭제-->
+	<!--학생삭제-->
 	<delete id="deleteStu" parameterType="hashmap">
 		DELETE FROM STU
 		WHERE STUNO = #{stuNo}
 	</delete>
+	
+	<delete id="deleteAllStu" parameterType="hashmap">
+		DELETE FROM STU
+		WHERE STUNO IN 
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
 	<!--교수삭제-->
 	<delete id="deleteProf" parameterType="hashmap">
 		DELETE FROM PROFESSOR

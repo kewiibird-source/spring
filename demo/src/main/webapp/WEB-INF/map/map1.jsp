@@ -5,9 +5,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
+    <title>map1</title>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="/js/page-change.js"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=630889fd4209a04de156ae751cf5e23b"></script>
     <style>
         table, tr, td, th{
             border : 1px solid black;
@@ -26,14 +28,7 @@
 <body>
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
-         <div>
-            <label>아이디 : <input v-model="userId"></label>
-         </div>
-         <div>
-            <label>비밀번호 : <input v-model="pwd" type="password"></label>
-         </div>
-         <button @click="fnLogin">로그인</button>
-         <button @click="">회원가입</button>
+        <div id="map" style="width:500px;height:400px;"></div>
     </div>
 </body>
 </html>
@@ -43,36 +38,23 @@
         data() {
             return {
                 // 변수 - (key : value)
-                userId : "",
-                pwd : ""
             };
         },
         methods: {
             // 함수(메소드) - (key : function())
-            fnLogin : function () {
-                let self = this;
-                let param = {
-                    userId : self.userId,
-                    pwd : self.pwd
+            fnMapInit: function () {
+                var container = document.getElementById('map');
+                var options = {
+                    center: new kakao.maps.LatLng(33.450701, 126.570667),
+                    level: 3
                 };
-                $.ajax({
-                    url: "http://localhost:8080/login.dox",
-                    dataType: "json",
-                    type: "POST",
-                    data: param,
-                    success: function (data) {
-                        alert(data.message);
-                        if(data.loginResult){
-                            location.href = data.url;
-                        }
-
-                    }
-                });
+                var map = new kakao.maps.Map(container, options);          
             }
         }, // methods
         mounted() {
             // 처음 시작할 때 실행되는 부분
             let self = this;
+            self.fnMapInit();
         }
     });
 

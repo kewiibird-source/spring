@@ -17,7 +17,7 @@
 			keyColumn="BOARDNO" 
 			keyProperty="boardNo">
 		INSERT INTO TBL_BOARD
-		VALUES(null, 'user01', #{title}, #{contents}, 0, #{kind}, NOW(), NOW())
+		VALUES(null, #{sessionId}, #{title}, #{contents}, 0, #{kind}, NOW(), NOW())
 	</insert>
 	
 	<insert id="insertBoardFile" parameterType="hashmap">
