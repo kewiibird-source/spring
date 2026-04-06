@@ -19,4 +19,8 @@ public class MapController {
 	public String map2(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{
 		return "/map/map2";
 	}
+	@RequestMapping("/map3.do")
+	public String map3(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{
+		return "/map/map3";
+	}
 }

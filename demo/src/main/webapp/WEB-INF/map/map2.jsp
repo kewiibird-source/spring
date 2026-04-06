@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+        <title>카테고리선택별지도</title>
         <script src="https://code.jquery.com/jquery-3.7.1.js"
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -36,8 +36,8 @@
     <body>
         <div id="app">
             <!-- html 코드는 id가 app인 태그 안에서 작업 -->
-             <div>
-                <select v-model="selectedCtg" @change="fnMapInit">
+            <div>
+                <select v-model="category" @change="fnSearch">
                     <option value="">:: 선택 ::</option>
                     <option value="MT1">대형마트</option>
                     <option value="CS2">편의점</option>
@@ -58,8 +58,8 @@
                     <option value="HP8">병원</option>
                     <option value="PM9">약국</option>
                 </select>
-             </div>
-             <hr>
+            </div>
+            <hr>
             <div id="map" style="width:500px;height:400px;"></div>
         </div>
     </body>
@@ -71,10 +71,11 @@
             data() {
                 return {
                     // 변수 - (key : value)
-                    selectedCtg : "",
-                    infowindow : null,
-                    map : null,
-                    ps : null
+                    infowindow: null,
+                    map: null,
+                    ps: null,
+                    category : "",
+                    markerList : []
                 };
             },
             methods: {
@@ -96,7 +97,7 @@
                     this.ps = new kakao.maps.services.Places(this.map);
 
                     // 카테고리로 은행을 검색합니다
-                    this.ps.categorySearch('CS2', this.placesSearchCB, { useMapBounds: true });
+                    // this.ps.categorySearch('CS2', this.placesSearchCB, { useMapBounds: true });
                 },
                 placesSearchCB: function (data, status, pagination) {
                     if (status === kakao.maps.services.Status.OK) {
@@ -110,13 +111,21 @@
                         map: this.map,
                         position: new kakao.maps.LatLng(place.y, place.x)
                     });
-
+                    this.markerList.push(marker);
                     // 마커에 클릭이벤트를 등록합니다
                     kakao.maps.event.addListener(marker, 'click', function () {
                         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
                         this.infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
                         this.infowindow.open(this.map, marker);
                     });
+                },
+                fnSearch(){
+                    let self = this;
+                    for(let i=0; i<self.markerList.length; i++){
+                        self.markerList[i].setMap(null); // 기존에 찍혀있던 마커를 지도에서 제거
+                    }
+                    self.markerList = [];
+                    self.ps.categorySearch(self.category, self.placesSearchCB, { useMapBounds: true });
                 }
 
             }, // methods

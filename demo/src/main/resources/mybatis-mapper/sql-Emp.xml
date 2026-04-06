@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace = "com.example.demo.mapper.EmpMapper"> <!--연결할mapper파일-->
+	<!--여러개 검색-->
+	<select id="selectEmpList" parameterType="hashmap" resultType="com.example.demo.model.Emp">
+		SELECT E.EMPNO, E.ENAME, E.JOB, E1.ENAME AS mgr, S.GRADE AS salGrade, D.DNAME
+		FROM EMP E
+		LEFT JOIN EMP E1 ON E.MGR = E1.EMPNO
+		LEFT JOIN SALGRADE S ON E.SAL BETWEEN S.LOSAL AND S.HISAL
+		LEFT JOIN DEPT D ON E.DEPTNO = D.DEPTNO
+		LIMIT #{pageSize} OFFSET #{offSet}
+	</select>
+	
+	<!--추가-->
+	<insert id="insertEmp" parameterType="hashmap">
+		INSERT INTO EMP(EMPNO, ENAME, JOB)
+		VALUES(#{empNo}, #{eName}, #{job})
+	</insert>
+	
+	<!--사원 상세보기-->
+	<select id="selectEmp" parameterType="hashmap" resultType="com.example.demo.model.Emp">
+		SELECT E.EMPNO, E.ENAME, E.JOB, E1.ENAME AS mgr, S.GRADE AS salGrade, D.DNAME
+		FROM EMP E
+		LEFT JOIN EMP E1 ON E.MGR = E1.EMPNO
+		LEFT JOIN SALGRADE S ON E.SAL BETWEEN S.LOSAL AND S.HISAL
+		LEFT JOIN DEPT D ON E.DEPTNO = D.DEPTNO
+		WHERE E.EMPNO = #{empNo}
+	</select>
+	
+	<!--상세보기에서 삭제-->
+	<delete id="deleteEmp" parameterType="hashmap">
+		DELETE FROM EMP
+		WHERE EMPNO = #{empNo}
+	</delete>
+	
+	<select id="selectEmpCount" parameterType="hashmap" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM EMP E
+		LEFT JOIN EMP E1 ON E.MGR = E1.EMPNO
+		LEFT JOIN SALGRADE S ON E.SAL BETWEEN S.LOSAL AND S.HISAL
+		LEFT JOIN DEPT D ON E.DEPTNO = D.DEPTNO
+	</select>
+	
+</mapper>
