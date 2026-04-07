@@ -22,13 +22,23 @@
         tr:nth-child(even){
             background-color: azure;
         }
+        #index, a {
+            text-decoration: none;
+            color: #000;
+            padding: 3px;
+            margin: 3px;
+        }
+        #index active {
+            font-weight: bold;
+            color: blue;
+        }
     </style>
 </head>
 <body>
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
         <div id="container">
-                <div class="search-area">
+                <div class="search-area" style="display: inline;">
                     직급 : 
                     <select v-model="position" @change="fnGetList">
                         <option value="">:: 전체 ::</option>
@@ -44,6 +54,13 @@
                         </select>
                     </label>
                 </div>   
+                <div style="display: inline; margin-left: 10px;">
+                    <select v-model="pageSize" @change="currentPage = 1; fnGetList();">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
             <div class="table-area"> 
                 <table>
                     <tr>
@@ -68,11 +85,20 @@
                     </tr>
                 </table>
             </div>
+            <div> 
+                <a href="javascript:;" @click="currentPage-=1; fnGetList();" v-if="currentPage != 1">◀</a>
+                <a @click="currentPage=num; fnGetList();" id="index" href="javascript:;" v-for="num in index">
+                    <span :class="{active : currentPage == num}">{{num}}</span>
+                </a>
+                <a href="javascript:;" @click="currentPage+=1; fnGetList();" v-if="currentPage != index">▶</a>
+            </div>
+            
             <div class="btn-area">
                 <a href="/prof/add.do"><button>교수추가</button></a>
                 <button @click="fnRemove">삭제</button>
                 <button @click="fnView(selectItem)">상세보기</button>
             </div>
+            
         </div>
     </div>
 </body>
@@ -87,7 +113,11 @@
                 position : "",
                 deptList : "",
                 deptNo : "",
-                selectItem : ""
+                selectItem : "",
+                // 페이징 변수들
+                pageSize: 5, // 한페이지에 출력할 개수
+                index : 1, // 최대 페이지 수 디폴트 1
+                currentPage : 1 // 현재페이지(위치)
             };
         },
         methods: {
@@ -96,7 +126,10 @@
                 let self = this;
                 let param = {
                     position : self.position,
-                    deptNo : self.deptNo
+                    deptNo : self.deptNo,
+                    // 페이징
+                    pageSize : self.pageSize,
+                    offSet : self.pageSize * (self.currentPage -1) // db에서 건너뛸 게시물 개수
                 };
                 $.ajax({
                     url: "http://localhost:8080/prof/list.dox",
@@ -107,6 +140,9 @@
                         console.log(data);
                         self.list = data.list;
                         self.deptList = data.deptList;
+                        // 최대 페이지 수 구하는 식 !!! 
+                        self.index = Math.ceil(data.totalCount/self.pageSize); // 올림 max.ceil
+                        console.log(self.index);
                     }
                 });
             },
@@ -137,6 +173,11 @@
                     return;
                 }
                 pageChange("/prof/view.do", {profNo : profNo});
+            },
+            fnPage : function(page) {
+                let self = this;
+                self.currentPage = page;
+                self.fnGetList();
             }
         }, // methods
         mounted() {

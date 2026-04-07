@@ -33,6 +33,12 @@ public class SchoolController {
 	public String prof(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap = schoolService.getProfList(map);
+		
+		int pageSize = Integer.parseInt((String)map.get("pageSize"));
+		int offSet = Integer.parseInt((String)map.get("offSet"));
+		map.put("pageSize", pageSize);
+		map.put("offSet", offSet);
+		
 		return new Gson().toJson(resultMap); 
 	}
 	// 학생목fhr
